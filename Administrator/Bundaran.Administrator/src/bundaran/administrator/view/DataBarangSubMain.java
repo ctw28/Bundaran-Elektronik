@@ -1,0 +1,805 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package bundaran.administrator.view;
+
+import annas.jdbc.service.impl.SqlImplementImpl;
+import annas.jdbc.service.model.PreparingSQLWriting;
+import com.onbarcode.barcode.Code39;
+import java.awt.Component;
+import java.awt.Frame;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.JSpinner;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingWorker;
+import sun.awt.AppContext;
+import bundaran.administrator.TokoBangunanAdministrator;
+import bundaran.administrator.internet.entity.ProductEnt;
+import bundaran.administrator.internet.impl.ProductImpl;
+import bundaran.administrator.internet.entity.SuplierEnt;
+import bundaran.administrator.internet.impl.SuplierImpl;
+//import tokobangunan.administrator.internet.impl.ProductImpl;
+import bundaran.administrator.util.ComponentIdentifier;
+import bundaran.administrator.util.ComponentProcess;
+import bundaran.administrator.util.CustomComboBox;
+import bundaran.administrator.util.MoveFrameListener;
+import bundaran.administrator.util.NumberValidation;
+import bundaran.administrator.util.staticIdentifier;
+import bundaran.administrator.view.progress.RequestProgress;
+
+
+/**
+ *
+ * @author AsyncTask.Void.087
+ */
+public final class DataBarangSubMain extends javax.swing.JDialog {
+
+    /**
+     * Creates new form DataBarangSubMain
+     */
+    Object instance;
+    ArrayList<String> dataSelected;
+    ComponentProcess componentProcess;
+
+    public DataBarangSubMain(Object instance, ArrayList<String> dataSelected) {
+        super((Frame) null, true);
+        initComponents();
+        setLocationRelativeTo(null);
+
+        this.instance = instance;
+        this.dataSelected = dataSelected;
+
+        /**
+         * Mendeklarasikan component2 yang akan dipakai nilainyaa
+         */
+        componentsInitialize();
+
+        if (dataSelected != null) {
+            generateBufferImageBarcode(dataSelected.get(0));
+            generateBarcodeButton.setEnabled(false);
+            actionButton.setText(staticIdentifier.buttonChangeName);
+            componentProcess.setComponentsText(dataSelected);
+            addSuplier.setEnabled(true);
+            //setContainer();
+        } else {
+            actionButton.setText(staticIdentifier.buttonSaveName);
+            generateBufferImageBarcode(null);
+        }
+        typeBarangItemStateChanged(null);
+//        productModalKeyReleased(null);
+        productPriceKeyReleased(null);
+
+    }
+
+    /**
+     * Mendeklarasikan component2 yang akan dipakai nilainyaa
+     */
+    synchronized void componentsInitialize() {
+        componentProcess = new ComponentProcess(this,
+                componentValueSequence(), jPanel1.getY() - jPanel3.getHeight(), listWarningMessage(), canNull(), spliter());
+    }
+    
+
+    private String[] listWarningMessage() {
+        return new String[]{
+            "Periksa kembali field Nomor Barcode", 
+            "Periksa kembali field Nama Barang",
+//            "Periksa kembali field Modal Barang", 
+//            "Periksa kembali field Harga Barang",
+//            "Periksa kembali field Tanggal Masuk",
+            "Periksa kembali field Type Barang",
+            "Periksa kembali field Jumlah Stok", 
+//            "Periksa kembali field Extra", 
+            "Periksa kembali field supplier",
+            "Periksa kembali field Keterangan",
+//            "harga suplier harus di isi",
+//            "harga suplier harus di isi",
+//            "Tanggal Harus Di Isi"
+        };
+    }
+
+
+    private ArrayList<Component> componentValueSequence() {
+        ArrayList<Component> map = new ArrayList<>();
+        map.add(barcodeNumber);
+        map.add(productName);
+//        map.add(productModal);
+        map.add(productPrice);
+//        map.add(productDateIn);
+        map.add(jumlah);
+        map.add(typeBarang);
+//        map.add(extraTypeVale);
+//        map.add(suplier);
+//        map.add(productDateTrans1);
+        map.add(ket);
+//        map.add(ketSup);
+//        map.add(harga_sup);
+        return map;
+    }
+
+
+    
+    private boolean[] canNull() {
+        int indexProductType = typeBarang.getSelectedIndex();
+        return new boolean[]{false, false, false, false, false,
+            false, false, (indexProductType != 3 | indexProductType != 4), false, true, true, false, true};
+    }
+
+    private String[] spliter() {
+        return new String[]{"", "", "Rp ", "Rp ", "", "", "", "", "", "", "", "", "Rp "
+        };
+    }
+
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jCalendar1 = new com.toedter.calendar.JCalendar();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        ket = new javax.swing.JTextArea();
+        barcodeNumber = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        productName = new javax.swing.JTextField();
+        generateBarcodeButton = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        labelImage = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        typeBarang = new javax.swing.JComboBox<>();
+        item = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        productPrice = new javax.swing.JTextField();
+        addSuplier = new javax.swing.JButton();
+        actionButton = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
+        jumlah = new javax.swing.JSpinner();
+        jLabel12 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        progressText2 = new javax.swing.JLabel();
+        progressText3 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        progressText1 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setUndecorated(true);
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
+
+        jPanel4.setBackground(new java.awt.Color(246, 246, 246));
+        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+
+        jPanel1.setBackground(new java.awt.Color(246, 246, 246));
+
+        jLabel3.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        jLabel3.setText("Harga Jual");
+
+        jLabel5.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        jLabel5.setText("Keterangan");
+
+        ket.setColumns(20);
+        ket.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        ket.setRows(5);
+        ket.setMargin(new java.awt.Insets(2, 10, 2, 10));
+        ket.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                ketKeyPressed(evt);
+            }
+        });
+        jScrollPane1.setViewportView(ket);
+
+        barcodeNumber.setEditable(false);
+        barcodeNumber.setBackground(new java.awt.Color(255, 255, 255));
+        barcodeNumber.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        barcodeNumber.setMargin(new java.awt.Insets(2, 10, 2, 10));
+
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        jLabel2.setText("Nama Barang");
+
+        productName.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        productName.setMargin(new java.awt.Insets(2, 10, 2, 10));
+        productName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                productNameKeyPressed(evt);
+            }
+        });
+
+        generateBarcodeButton.setUI(new bundaran.administrator.util.WarningUI());
+        generateBarcodeButton.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
+        generateBarcodeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tokobangunan/administrator/res/generatebacode.PNG"))); // NOI18N
+        generateBarcodeButton.setText("Barcode");
+        generateBarcodeButton.setFocusable(false);
+        generateBarcodeButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        generateBarcodeButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        generateBarcodeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generateBarcodeButtonActionPerformed(evt);
+            }
+        });
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labelImage, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(labelImage, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jLabel10.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        jLabel10.setText("Type Barang");
+
+        typeBarang.setRenderer(new CustomComboBox());
+        typeBarang.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        typeBarang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Pilih Salah Satu --", "Buah", "Pasang" }));
+        typeBarang.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                typeBarangItemStateChanged(evt);
+            }
+        });
+
+        jButton1.setUI(new bundaran.administrator.util.WarningUI());
+        jButton1.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tokobangunan/administrator/res/print.PNG"))); // NOI18N
+        jButton1.setText("Cetak");
+        jButton1.setFocusable(false);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jLabel11.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        jLabel11.setText("Nomor Barcode");
+
+        productPrice.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        productPrice.setMargin(new java.awt.Insets(2, 10, 2, 10));
+        productPrice.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                productPriceKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                productPriceKeyReleased(evt);
+            }
+        });
+
+        addSuplier.setText("Data Suplier");
+        addSuplier.setEnabled(false);
+        addSuplier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addSuplierActionPerformed(evt);
+            }
+        });
+
+        actionButton.setUI(new bundaran.administrator.util.WarningUI());
+        actionButton.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
+        actionButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tokobangunan/administrator/res/save.PNG"))); // NOI18N
+        actionButton.setText("Simpan Data   ");
+        actionButton.setFocusable(false);
+        actionButton.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        actionButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                actionButtonMouseEntered(evt);
+            }
+        });
+        actionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actionButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel13.setFont(new java.awt.Font("Arial", 2, 11)); // NOI18N
+        jLabel13.setText("Toko Bundaran Elektronik, Kendari, Sulawesi Tenggara");
+
+        jumlah.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        jumlah.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jumlahStateChanged(evt);
+            }
+        });
+        jumlah.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jumlahKeyPressed(evt);
+            }
+        });
+
+        jLabel12.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        jLabel12.setText("Jumlah");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(431, 431, 431)
+                                .addComponent(actionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(item, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jSeparator1)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel11)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel10)
+                                    .addComponent(jLabel3))
+                                .addGap(67, 67, 67)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(barcodeNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(generateBarcodeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(productName, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(productPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(typeBarang, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(37, 37, 37)
+                                                .addComponent(jLabel12)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jumlah)))
+                                        .addContainerGap())))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel13)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(86, 86, 86)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(addSuplier, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1))
+                        .addContainerGap())))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(barcodeNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(generateBarcodeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(productName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(typeBarang, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jumlah, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(productPrice, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addComponent(jLabel5)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(item, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(39, 39, 39))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(11, 11, 11)
+                                .addComponent(addSuplier, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jLabel13)
+                        .addGap(146, 146, 146))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(actionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+
+        MoveFrameListener frameListener = new MoveFrameListener(jPanel2);
+        addMouseListener(frameListener);
+        addMouseMotionListener(frameListener);
+        jPanel3.setBackground(new java.awt.Color(0, 153, 153));
+
+        progressText2.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
+        progressText2.setForeground(new java.awt.Color(255, 255, 255));
+        progressText2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tokobangunan/administrator/res/close.png"))); // NOI18N
+        progressText2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                progressText2MouseClicked(evt);
+            }
+        });
+
+        progressText3.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
+        progressText3.setForeground(new java.awt.Color(255, 255, 255));
+        progressText3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tokobangunan/administrator/res/logo14.PNG"))); // NOI18N
+        progressText3.setText("   Aplikasi Pendataan Barang Toko Bundaran Elektronik");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(progressText3, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(progressText2)
+                .addGap(18, 18, 18))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(progressText2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(progressText3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jLabel1.setFont(new java.awt.Font("Arial", 2, 11)); // NOI18N
+        jLabel1.setText("Pastikan Data Barang sudah Benar!!! ");
+
+        progressText1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        progressText1.setText("Form Pengisian Data Barang");
+
+        jPanel5.setBackground(new java.awt.Color(102, 102, 102));
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(progressText1)
+                                .addGap(243, 243, 243)
+                                .addComponent(jLabel1))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(35, Short.MAX_VALUE))))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(progressText1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void requestToServer(ArrayList<Object> object, String process) {
+        String backTaskID = TokoBangunanAdministrator.getIDTask();
+        RequestProgress progress = new RequestProgress(this, backTaskID);
+        progress.setVisible(true);
+
+        //List<NameValuePair> list = new ArrayList<>();
+        ProductEnt ent = new ProductEnt(progress, object, process, "Mohon menunggu...");
+        ProductImpl impl = new ProductImpl(backTaskID, instance);
+
+        
+        if (process.equals("SAVE_PRODUCT")) {
+            impl.enchanceSave(ent);
+        } 
+        
+        else {
+            impl.enchanceUpdate(ent);
+        }
+
+    }
+      
+
+    private void actionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actionButtonActionPerformed
+
+        String buttonID = actionButton.getText();
+        componentsInitialize(); // untuk cek data terisi atau tidak dan beri peringatan
+//        componentsInitialize2(); // untuk cek data terisi atau tidak dan beri peringatan
+        if (componentProcess.isNotComponentWarning()) {
+            ArrayList<Object> list = componentProcess.componentsText();
+            if (dataSelected != null) {
+                list.set(0, dataSelected.get(0));
+            }
+
+            try {
+               
+
+                PreparingSQLWriting psw = new PreparingSQLWriting();
+                SqlImplementImpl query = new SqlImplementImpl();
+
+                if (buttonID.equals(staticIdentifier.buttonSaveName)) {
+                    requestToServer(list, "SAVE_PRODUCT");
+//                    requestToServer2();
+                } else {
+                    requestToServer(list, "UPDATE_PRODUCT");
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(DataBarangSubMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }//GEN-LAST:event_actionButtonActionPerformed
+
+    private void generateBarcodeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateBarcodeButtonActionPerformed
+
+        //String command = "C:\\\\xampp\\apache\\bin\\httpd.exe";
+        //Runtime.getRuntime().exec(command);
+        generateBufferImageBarcode(null);
+
+    }//GEN-LAST:event_generateBarcodeButtonActionPerformed
+
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+
+        productName.requestFocus();
+
+    }//GEN-LAST:event_formWindowGainedFocus
+
+    private void typeBarangItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_typeBarangItemStateChanged
+
+        if (typeBarang.getSelectedIndex() == 3
+                || typeBarang.getSelectedIndex() == 4) {
+            item.setText("Item");
+//            extraTypeVale.setEnabled(true);
+//            extraType.setText("Jumlah per-" + String.valueOf(typeBarang.getSelectedItem()));
+        } else {
+            item.setText("");
+//            extraType.setText("");
+//            extraTypeVale.setText("");
+//            extraTypeVale.setEnabled(false);
+        }
+
+    }//GEN-LAST:event_typeBarangItemStateChanged
+
+
+    private void productPriceKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_productPriceKeyReleased
+
+        NumberValidation validation = new NumberValidation(".", "Rp ");
+        productPrice.setText(validation.fieldChecked(productPrice.getText()));
+
+    }//GEN-LAST:event_productPriceKeyReleased
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        try {
+            String path = new File(".").getCanonicalPath();
+            path += "\\barfile.jpg";
+            String[] command = {"cmd.exe", "/c", path};
+            ProcessBuilder builder = new ProcessBuilder(command);
+            builder.redirectErrorStream(true);
+            builder.start();
+        } catch (IOException ex) {
+            Logger.getLogger(DataBarangSubMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void actionButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actionButtonMouseEntered
+
+    }//GEN-LAST:event_actionButtonMouseEntered
+
+    private void productPriceKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_productPriceKeyPressed
+        try {
+            ComponentIdentifier.menu.setVisible(false);
+            ((JTextField) evt.getComponent()).requestFocus();
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_productPriceKeyPressed
+
+    private void productNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_productNameKeyPressed
+        try {
+            ComponentIdentifier.menu.setVisible(false);
+            ((JTextField) evt.getComponent()).requestFocus();
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_productNameKeyPressed
+
+    private void ketKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ketKeyPressed
+        try {
+            ComponentIdentifier.menu.setVisible(false);
+            ((JTextArea) evt.getComponent()).requestFocus();
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_ketKeyPressed
+
+    private void progressText2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_progressText2MouseClicked
+
+        dispose();
+
+    }//GEN-LAST:event_progressText2MouseClicked
+
+    private void addSuplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSuplierActionPerformed
+        // TODO add your handling code here:
+        dataSup dsm = new dataSup(this, barcodeNumber.getText(), productName.getText());
+        dsm.setVisible(true);
+    }//GEN-LAST:event_addSuplierActionPerformed
+
+    private void jumlahStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jumlahStateChanged
+
+        if ((int) jumlah.getValue() < 0) {
+            jumlah.setValue(0);
+        }
+    }//GEN-LAST:event_jumlahStateChanged
+
+    private void jumlahKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jumlahKeyPressed
+
+    }//GEN-LAST:event_jumlahKeyPressed
+
+    private void generateBufferImageBarcode(String existBarcode) {
+        String imageName = "barfile.jpg";
+
+        try {
+            Code39 c39 = new Code39();
+            String barcodeNumberV = (existBarcode != null) ? existBarcode : generateRandomBarcode();
+
+            this.barcodeNumber.setText(barcodeNumberV);
+
+            /**
+             * Mengilangkan tanda bintang pada tanda barcode
+             */
+            c39.setShowStartStopInText(false);
+            c39.setData(barcodeNumberV);
+
+            c39.drawBarcode(imageName);
+
+            Image i = ImageIO.read(new File(imageName));
+            //BufferedImage image = ImageIO.read(new File(imageName));
+            labelImage.setIcon(new javax.swing.ImageIcon(i)); // NOI18N
+
+        } catch (Exception ex) {
+            Logger.getLogger(DataBarangSubMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private String generateRandomBarcode() {
+
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
+
+        // first not 0 digit
+        sb.append(random.nextInt(9) + 1);
+
+        // rest of 11 digits
+        for (int i = 0; i < 11; i++) {
+            sb.append(random.nextInt(10));
+        }
+
+        return String.valueOf(Long.parseLong(sb.toString()));
+    }
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        new DataBarangSubMain(args, null).setVisible(true);
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton actionButton;
+    private javax.swing.JButton addSuplier;
+    private javax.swing.JTextField barcodeNumber;
+    private javax.swing.JButton generateBarcodeButton;
+    private javax.swing.JLabel item;
+    private javax.swing.JButton jButton1;
+    private com.toedter.calendar.JCalendar jCalendar1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSpinner jumlah;
+    private javax.swing.JTextArea ket;
+    private javax.swing.JLabel labelImage;
+    private javax.swing.JTextField productName;
+    private javax.swing.JTextField productPrice;
+    private javax.swing.JLabel progressText1;
+    private javax.swing.JLabel progressText2;
+    private javax.swing.JLabel progressText3;
+    private javax.swing.JComboBox<String> typeBarang;
+    // End of variables declaration//GEN-END:variables
+
+}
